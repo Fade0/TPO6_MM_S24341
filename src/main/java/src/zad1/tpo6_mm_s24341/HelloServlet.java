@@ -26,13 +26,7 @@ public class HelloServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         String pokemon_id = "";
-        String pokemon_name = "";
-        String pokemon_type_primary = "";
-        String pokemon_type_secondary = "";
-        String pokemon_hp = "";
-        String pokemon_attack = "";
-        String pokemon_defense = "";
-        String pokemon_speed = "";
+
 
         pokemon_id  = request.getParameter("pokemon_id");
         System.out.println(pokemon_id);
@@ -50,22 +44,53 @@ public class HelloServlet extends HttpServlet {
         try {
             String sqlQuery = "SELECT * From pjatk.pokemon";
             boolean anythingAdded = false;
-            if (pokemon_name == null){
+
+            //PokemonName
+            if (request.getParameter("pokemon_name") != null) {
+                if (anythingAdded) {
+                    sqlQuery = sqlQuery + " AND ";
+
+                } else {
+                    sqlQuery = sqlQuery + " WHERE ";
+                    anythingAdded = true;
+
+                }
+                sqlQuery = sqlQuery + "name LIKE '%" + request.getParameter("pokemon_name") + "%'";
+            }
+            //PokemonId
+            if (request.getParameter("pokemon_id") != null) {
+                if (anythingAdded) {
+                    sqlQuery = sqlQuery + " AND ";
+
+                } else {
+                    sqlQuery = sqlQuery + " WHERE ";
+                    anythingAdded = true;
+
+                }
+                sqlQuery = sqlQuery + "pokemon_id =" + request.getParameter("pokemon_id");
 
             }
 
-            /*
-            "SELECT * From pjatk.pokemon " +
-                    "WHERE pokemon_id =" + pokemon_id +
-                    " AND name = " + pokemon_name +
-                    " AND (type_primary = " + pokemon_type_primary + "OR type_secondary =" + pokemon_type_primary
+            //PokemonType
+            if (request.getParameter("pokemon_type") != null ) {
+                if (anythingAdded) {
+                    sqlQuery = sqlQuery + " AND ";
 
-             */
+                } else {
+                    sqlQuery = sqlQuery + " WHERE ";
+                    anythingAdded = true;
+
+                }
+                sqlQuery = sqlQuery + "( type_primary LIKE '%" + request.getParameter("pokemon_type") +
+                        "%' OR type_secondary LIKE '%" + request.getParameter("pokemon_type") + "%')";
+            }
+
+            System.out.println(sqlQuery);
             ResultSet rs = connection.prepareStatement(sqlQuery).executeQuery();
 
 
             while (rs.next()){
-                System.out.println(rs.getString("pokemon_id"));
+                //System.out.println(rs.getString("pokemon_id"));
                 //queryList.add(rs.getString("author"));
                 queryList.add(new Pokemon(rs.getInt("pokemon_id"),
                             rs.getString("name"),

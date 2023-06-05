@@ -16,18 +16,6 @@ public class Listener implements ServletContextListener {
 
         DataSourceConnect.initProps();
 
-        Connection connection = DataSourceConnect.getConnection();
-
-        try {
-            ResultSet rs = connection.prepareStatement("SELECT * From pjatk.pokemon").executeQuery();
-            rs.next();
-
-            while (rs.next()){
-                System.out.println(rs.getString("pokemon_id"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
     }
 }

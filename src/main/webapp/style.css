@@ -49,19 +49,12 @@ body {
 .search_regular {
     font-size: 36px;
     background-color: #FFCB05;
-    margin-left: 100px;
+    margin-left: 500px;
     width: 450px;
 
 }
 
-.search_advanced {
-    font-size: 36px;
-    background-color: #EB7C22;
-    float: right;
-    margin-left: 100px;
-    width: 450px;
 
-}
 .div_text {
     margin-left: 40px;
     margin-top: 40px;
@@ -178,6 +171,7 @@ body {
     width: 40%;
     height: 500px;
     font-size: 20px;
+    overflow:scroll
 }
 
 #img_maybe {
