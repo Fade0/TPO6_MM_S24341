@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-@WebServlet(name = "bookStore", value = "/book-store")
+@WebServlet(name = "PokeCenter", value = "/pokecenter")
 public class HelloServlet extends HttpServlet {
     private String message;
 
@@ -25,42 +25,56 @@ public class HelloServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        String book_title = "";
-        String book_author = "";
-        String book_id = "";
-        String book_ISBN = "";
+        String pokemon_id = "";
+        String pokemon_name = "";
+        String pokemon_type_primary = "";
+        String pokemon_type_secondary = "";
+        String pokemon_hp = "";
+        String pokemon_attack = "";
+        String pokemon_defense = "";
+        String pokemon_speed = "";
 
-        book_author = request.getParameter("author");
-        System.out.println(book_author);
+        pokemon_id  = request.getParameter("pokemon_id");
+        System.out.println(pokemon_id);
         DataSourceConnect.initProps();
 
         Connection connection = DataSourceConnect.getConnection();
-        String titleString = "";
-        String authorString = "";
+        String pokemon_idString = "";
+        String nameString = "";
 
-        ArrayList<Book> queryList = new ArrayList<>();
+        ArrayList<Pokemon> queryList = new ArrayList<>();
 
 
         PrintWriter out = response.getWriter();
-        out.println(titleString);
+        out.println(pokemon_idString);
         try {
+            String sqlQuery = "SELECT * From pjatk.pokemon";
+            boolean anythingAdded = false;
+            if (pokemon_name == null){
 
-            ResultSet rs = connection.prepareStatement("SELECT * From pjatk.books WHERE author ='" + book_author +"'").executeQuery();
+            }
+
+            /*
+            "SELECT * From pjatk.pokemon " +
+                    "WHERE pokemon_id =" + pokemon_id +
+                    " AND name = " + pokemon_name +
+                    " AND (type_primary = " + pokemon_type_primary + "OR type_secondary =" + pokemon_type_primary
+
+             */
+            ResultSet rs = connection.prepareStatement(sqlQuery).executeQuery();
 
 
             while (rs.next()){
-                System.out.println(rs.getString("author"));
+                System.out.println(rs.getString("pokemon_id"));
                 //queryList.add(rs.getString("author"));
-                queryList.add(new Book(rs.getInt("book_id"),
-                            rs.getString("title"),
-                            rs.getString("author"),
-                            rs.getString("description"),
-                            rs.getString("isbn"),
-                            rs.getDate("publishDate"),
-                            rs.getInt("rating"),
-                            rs.getDate("creationDate")));
-
-
+                queryList.add(new Pokemon(rs.getInt("pokemon_id"),
+                            rs.getString("name"),
+                            rs.getString("type_primary"),
+                            rs.getString("type_secondary"),
+                            rs.getString("hp"),
+                            rs.getString("attack"),
+                            rs.getString("defense"),
+                            rs.getString("speed")));
 
             }
 
